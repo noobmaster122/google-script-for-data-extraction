@@ -4,8 +4,8 @@
  * delete converted excel files
  * @uses removeEmptyRows() | formatData() | removeConvertedXls()
  *
- * @param {array} array of files Ids.
- * @return {array} array of arrays
+ * @param {array} xlsIds.
+ * @return {array}
  * @customfunction
  */
 const extractData = (xlsIds) => {

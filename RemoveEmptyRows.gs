@@ -1,8 +1,8 @@
 /**
  * Remove empty rows in the target converted excel sheet
  *
- * @param {array} array of arrays (data rows).
- * @return {array} array of arrays
+ * @param {array} data
+ * @return {array}
  * @customfunction
  */
 const removeEmptyRows = (data) => {

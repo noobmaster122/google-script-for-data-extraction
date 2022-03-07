@@ -1,7 +1,7 @@
 /**
  * remove converted xls file
  *
- * @param {string} file id.
+ * @param {string} id
  * @return {void}
  * @customfunction
  */

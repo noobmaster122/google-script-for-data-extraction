@@ -2,8 +2,8 @@
  * create a tmp folder to hold converted xls files
  * @uses : customNotice()| isExcelSheet() | getTargetFiles() | excelToSheet()
  *
- * @param {string}
- * @return {array} of sheets Ids
+ * @param {string} readFromFolder
+ * @return {array}
  * @customfunction
  */
 function importXLS(readFromFolder) {
@@ -28,30 +28,30 @@ function importXLS(readFromFolder) {
  * check if file is valid excel sheet
  * @see https://support.microsoft.com/en-us/office/file-formats-that-are-supported-in-excel-0943ff2c-6014-4e8d-aaea-b83d51d46247
  *
- * @param {string}
+ * @param {string} title
  * @return {bool} 
  * @customfunction
  */
 const isExcelSheet = (title) => {
-  const reg = new RegExp("\.xl(s[xmb]|tx|[ta]m|s|t|a|w|r)$")
-  return reg.exec(title) ? true : false;
+  const reg = new RegExp("\.xl(?:s[xmb]|tx|[ta]m|s|t|a|w|r)$")
+  return !!reg.exec(title);
 }
 /**
  * get file extension
  *
- * @param {string}
- * @return {string} 
+ * @param {string} title
+ * @return {string|null} 
  * @customfunction
  */
 const getExcelExt = (title) => {
-  const reg = new RegExp("\.xl(s[xmb]|tx|[ta]m|s|t|a|w|r)$")
-  return reg.exec(title) ? reg.exec(title)[0] : null;
+  const reg = new RegExp("\.xl(?:s[xmb]|tx|[ta]m|s|t|a|w|r)$")
+  return reg.exec(title)[0] || null;
 }
 /**
  * create a tmp folder to hold converted xls files
  * @uses geTmpFolderId()
  *
- * @param {object}
+ * @param {object} file
  * @return {string} 
  * @customfunction
  */
@@ -74,14 +74,14 @@ const excelToSheet = (file) => {
 /**
  * retrieve files
  *
- * @param {string}
+ * @param {string} name
  * @return {object} 
  * @customfunction
  */
 const getTargetFiles = (name) => {
-  let folders = DriveApp.getFoldersByName(name);
-  folder = folders.hasNext() ? folders.next() : undefined;
-  if (!!!folder) throw 'Error: target folder not found! Enter an existing folder!';
+  const folders = DriveApp.getFoldersByName(name);
+  let folder = folders.hasNext() ? folders.next() : undefined;
+  if (!folder) throw 'Error: target folder not found! Enter an existing folder!';
   return folder
     .getFiles();
 }
@@ -93,7 +93,7 @@ const getTargetFiles = (name) => {
  * @customfunction
  */
 const geTmpFolderId = () => {
-  let folders = DriveApp.getFoldersByName('tmp');
+  const folders = DriveApp.getFoldersByName('tmp');
   let tmpFolder = folders.hasNext() ? folders.next() : undefined;
   if (!tmpFolder) {
     tmpFolder = DriveApp.createFolder('tmp');// create the tmp folder in the root of the drive

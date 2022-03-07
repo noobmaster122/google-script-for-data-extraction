@@ -4,9 +4,9 @@
  * the script will ignore extra rows
  * @uses getExcelExt()
  *
- * @param {array} data array.
- * @param {string} converted excel file name.
- * @return {array | false}.
+ * @param {array} xlsData.
+ * @param {string} fileName.
+ * @return {array}.
  * @customfunction
  */
 const formatData = (xlsData, fileName) => {

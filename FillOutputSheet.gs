@@ -1,7 +1,7 @@
 /**
  * inject extracted data into our output sheet
  *
- * @param {array} array of arrays.
+ * @param {array} data.
  * @return {void}
  * @customfunction
  */
