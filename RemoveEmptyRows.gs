@@ -5,18 +5,10 @@
  * @return {array}
  * @customfunction
  */
-const removeEmptyRows = (data) => {
-  try{
-    let cleanedRows = [];
-    data.forEach(row => {
-      let counter = 0;
-      row.forEach(cell => {
-        if (cell === '') counter++;
-      });
-      if (row.length !== counter) cleanedRows.push(row);
-    });
-    return cleanedRows;
-  } catch (err) {
-    customNotice(`Script failed during empty rows removal for the following reason : \n\n ${err.toString()}`);
+const removeEmptyRows = (data) => { 
+  try { 
+    return data.filter(row => !row.every(cell => cell === (''))) 
+    } catch (err) {
+       customNotice(`Script failed during empty rows removal for the following reason : \n\n ${err.toString()}`); 
   }
 }
