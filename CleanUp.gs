@@ -2,7 +2,7 @@
  * the script wont clear the tmp folder if it fails
  * in which case, this function will do that
  *
- * @param {string}
+ * @param {void}
  * @return {void}
  * @customfunction
  */
