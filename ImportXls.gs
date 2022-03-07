@@ -44,8 +44,8 @@ const isExcelSheet = (title) => {
  * @customfunction
  */
 const getExcelExt = (title) => {
-  const reg = new RegExp("\.xl(?:s[xmb]|tx|[ta]m|s|t|a|w|r)$")
-  return reg.exec(title)[0] || null;
+  const reg = new RegExp("\.xl(?:s[xmb]|tx|[ta]m|s|t|a|w|r)_converted$")
+  return null || reg.exec(title)[0];
 }
 /**
  * create a tmp folder to hold converted xls files
