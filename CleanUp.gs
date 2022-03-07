@@ -38,8 +38,8 @@ const fileDeletionNotice = () => {
     const files = listFolderFiles().map(file => file.title).join('\n file name : ');
 
 
-  const alertResponse = ui.alert(`These files inside the tmp folder will get deleted!Do you wish to continue ? \n\n 
+  ui.alert(`These files inside the tmp folder will get deleted!Do you wish to continue ? \n\n 
                                   ${files}`, ui.ButtonSet.YES_NO);
 
-  return alertResponse == ui.Button.YES ? true : false;
+  return ui.Button.YES ? true : false;
 }
