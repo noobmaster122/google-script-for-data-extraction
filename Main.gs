@@ -7,9 +7,10 @@
  * @customfunction
  */
 const main = () => {
-
   const excelSheetsFolder = scenario();
-  const convertedXlsIds = importXLS(excelSheetsFolder);// convert xls into sheets
-
-  fillOutputSheet(extractData(convertedXlsIds));// write data into result sheet
+  if (excelSheetsFolder) {
+    const convertedXlsIds = importXLS(excelSheetsFolder);// convert xls into sheets
+    fillOutputSheet(extractData(convertedXlsIds));// write data into result sheet
+  }
+  cleanUp();// clear tmp folder
 }
