@@ -33,7 +33,7 @@ function importXLS(readFromFolder) {
  * @customfunction
  */
 const isExcelSheet = (title) => {
-  const reg = new RegExp("\.xl(?:s[xmb]|tx|[ta]m|s|t|a|w|r)$")
+  const reg = new RegExp(/\.xl(?:s[xmb]|tx|[ta]m|s|t|a|w|r)$/);
   return !!reg.exec(title);
 }
 /**
@@ -43,8 +43,8 @@ const isExcelSheet = (title) => {
  * @return {string|null} 
  * @customfunction
  */
-const getExcelExt = (title) => {
-  const reg = new RegExp("\.xl(?:s[xmb]|tx|[ta]m|s|t|a|w|r)_converted$")
+const fileNameTimestampAndExt = (title) => {
+  const reg = new RegExp(/\s-\s\d*\.xl(?:s[xmb]|tx|[ta]m|s|t|a|w|r)_converted$/);
   return null || reg.exec(title)[0];
 }
 /**
@@ -75,7 +75,7 @@ const excelToSheet = (file) => {
  * retrieve files
  *
  * @param {string} name
- * @return {object} 
+ * @return {FileIterator} 
  * @customfunction
  */
 const getTargetFiles = (name) => {

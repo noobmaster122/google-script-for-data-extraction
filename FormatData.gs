@@ -11,7 +11,7 @@
  */
 const formatData = (xlsData, fileName) => {
   try {
-    const fileNameWithoutExt = fileName.split(getExcelExt(fileName))[0];// get file title without ext
+    const fileNameWithoutExt = fileName.split(fileNameTimestampAndExt(fileName))[0];// get file title without ext
     let data = []// save file rows
     if (xlsData[0].length === xlsData[1].length) {// start data extraction if date and value rows are equal
       for (let i = 0; i < xlsData[0].length; i++) {
