@@ -33,13 +33,12 @@ const extractData = (xlsIds) => {
     xlsIds.forEach(id => {
       const convertedSheet = ss.openById(id);
       let data = convertedSheet.getDataRange().getValues();// get raw data
-      console.log("am raw data", data);
       data = formatData(removeEmptyRows(data), convertedSheet.getName());// remove empty columns and format data 
       cleaneData.push(...data);// save extracted data
       removeConvertedXls(id);// delete sheet after extracting data
     });
 
-    cleaneData.unshift(['File', 'Date', 'Value']);//append the table headers
+    cleaneData.unshift(['Project Name', 'Date', 'Value']);//append the table headers
     return cleaneData;
   } catch (err) {
     customNotice(`Script failed during data extraction for the following reason : \n\n ${err.toString()}`);
@@ -56,7 +55,7 @@ const removeConvertedXls = (id) => Drive.Files.remove(id);
 /**
  * remove empty columns from data rows
  * format data into 3 column arrays
- * the script will ignore extra rows
+ * the script will ignore extra columns
  * @uses getExcelExt()
  *
  * @param {array} xlsData.
@@ -66,7 +65,7 @@ const removeConvertedXls = (id) => Drive.Files.remove(id);
  */
 const formatData = (xlsData, fileName) => {
   try {
-    const fileNameWithoutExt = fileName.split(getExcelExt(fileName))[0];// get file title without ext
+    const fileNameWithoutExt = fileName.split(fileNameTimestampAndExt(fileName))[0];// get file title without ext
     let data = []// save file rows
     if (xlsData[0].length === xlsData[1].length) {// start data extraction if date and value rows are equal
       for (let i = 0; i < xlsData[0].length; i++) {
@@ -84,21 +83,7 @@ const formatData = (xlsData, fileName) => {
     customNotice(err.toString())
   }
 }
-/**
- * inject extracted data into our output sheet
- *
- * @param {array} data.
- * @return {void}
- * @customfunction
- */
-const fillOutputSheet = (data) => {
-  try {
-    const s = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    s.getRange(1, 1, data.length, 3).setValues(data);
   } catch (err) {
-    customNotice(`Script failed to write data into the output sheet for the following reason : \n\n ${err.toString()}`);
-  }
-}
 /**
  * create a tmp folder to hold converted xls files
  * @uses : customNotice()| isExcelSheet() | getTargetFiles() | excelToSheet()
@@ -113,8 +98,8 @@ function importXLS(readFromFolder) {
     const files = getTargetFiles(readFromFolder);// get all xls files 
     let convertedXlsIds = [];
     while (files.hasNext()) {
-      let xFile = files.next();
-      let name = xFile.getName();
+      const xFile = files.next();
+      const name = xFile.getName();
       if (isExcelSheet(name)) {// only parse excel files
         convertedXlsIds.push(excelToSheet(xFile))// save converted file id
       }
@@ -134,7 +119,7 @@ function importXLS(readFromFolder) {
  * @customfunction
  */
 const isExcelSheet = (title) => {
-  const reg = new RegExp("\.xl(?:s[xmb]|tx|[ta]m|s|t|a|w|r)$")
+  const reg = new RegExp(/\.xl(?:s[xmb]|tx|[ta]m|s|t|a|w|r)$/);
   return !!reg.exec(title);
 }
 /**
@@ -144,8 +129,8 @@ const isExcelSheet = (title) => {
  * @return {string|null} 
  * @customfunction
  */
-const getExcelExt = (title) => {
-  const reg = new RegExp("\.xl(?:s[xmb]|tx|[ta]m|s|t|a|w|r)_converted$")
+const fileNameTimestampAndExt = (title) => {
+  const reg = new RegExp(/\s-\s\d*\.xl(?:s[xmb]|tx|[ta]m|s|t|a|w|r)_converted$/);
   return null || reg.exec(title)[0];
 }
 /**
@@ -181,7 +166,7 @@ const excelToSheet = (file) => {
  */
 const getTargetFiles = (name) => {
   const folders = DriveApp.getFoldersByName(name);
-  let folder = folders.hasNext() ? folders.next() : undefined;
+  const folder = folders.hasNext() ? folders.next() : undefined;
   if (!folder) throw 'Error: target folder not found! Enter an existing folder!';
   return folder
     .getFiles();
@@ -212,10 +197,11 @@ const geTmpFolderId = () => {
  * @customfunction
  */
 const main = () => {
-
   const excelSheetsFolder = scenario();
-  const convertedXlsIds = importXLS(excelSheetsFolder);// convert xls into sheets
-  fillOutputSheet(extractData(convertedXlsIds));// write data into result sheet
+  if (excelSheetsFolder) {
+    const convertedXlsIds = importXLS(excelSheetsFolder);// convert xls into sheets
+    fillOutputSheet(extractData(convertedXlsIds));// write data into result sheet
+  }
   cleanUp();// clear tmp folder
 }
 /**
@@ -228,10 +214,11 @@ const main = () => {
 const customNotice = (msg) => SpreadsheetApp.getUi().alert(msg);
 /**
  * usage workflow
+ * when user clicks the close button in the modal, the script will stop running
  * @uses customNotice()
  *
  * @param {void}
- * @return {void}
+ * @return {string|null}
  * @customfunction
  */
 const scenario = () => {
@@ -247,15 +234,16 @@ const scenario = () => {
 
   const presetsResponse = ui.alert(`do you wish to use default presets? \n\n 
                                   *- ${defaultEntryFolder} for reading the excel sheets
-                                  *- tmp folder will be used to store converted excel sheets`, ui.ButtonSet.YES_NO);
+                                  *- tmp folder will be used to store converted excel sheets`, ui.ButtonSet.YES_NO_CANCEL);
 
   // Process the user's response.
-  if (presetsResponse != ui.Button.YES) {
-    return grabInputFolderName(ui, defaultEntryFolder);
-  } else {
-    return defaultEntryFolder;// defaul will be returned if no folder is chosen!
+  if (presetsResponse == ui.Button.YES) {
+    return defaultEntryFolder;// default will be returned if no folder is chosen!
+  } else if (presetsResponse == ui.Button.NO){
+    return grabInputFolderName(ui, defaultEntryFolder);// retrieve the folder name from the user
+  } else{
+    return null;// if user clicks cancel or exit button, script will stop running
   }
-
 }
 /**
  * default folder where the raw excel sheets are!
