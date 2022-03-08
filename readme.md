@@ -3,6 +3,8 @@
 Notes:
 
 + The script uses the Drive service. The user must install it manually
++ The script will override the active spreadsheet's content in the output sheet, and it will only write into the three first columns.
++ The script expects the active spreadsheet to be blank.
 
 
 + The script starts when the output/results sheet is opened, user can then choose to stop the script from doing its thing, or let it run!
@@ -14,4 +16,3 @@ Notes:
 + The user will be alerted when cleanup function is triggered (this happens in case the script fails to clear the converted excel sheets)
 ----------
 + "Script.gs" file contains all the project, so you can copy paste into google script IDE directly!
-
