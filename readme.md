@@ -3,6 +3,7 @@
 Notes:
 
 + The script starts when the output/results sheet is opened, user can then choose to stop the script from doing its thing, or let it run!
++ The script uses the Drive service, user must install it manually
 + The script uses a tmp folder in the root of the drive, if none is found, the script will create one!
 + If multiple tmp folders exist, the script will use the first one!
 ----------
