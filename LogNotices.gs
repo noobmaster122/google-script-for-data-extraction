@@ -6,3 +6,19 @@
  * @customfunction
  */
 const customNotice = (msg) => SpreadsheetApp.getUi().alert(msg);
+/**
+ * get error stack
+ *
+ * @param {string}
+ * @return {string}
+ * @customfunction
+ */
+const __getStackTrace__ = function(message) {
+  let s = `Error: ${message}\n`;
+  (new Error()).stack
+               .split('\n')
+               .forEach((token)=>
+               {s += `\t${token.trim()}\n`}
+  );      
+  return s;
+}

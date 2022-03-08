@@ -12,9 +12,9 @@ const scenario = () => {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const ui = SpreadsheetApp.getUi();
   //create menu
-   const menu = SpreadsheetApp.getUi().createMenu("⚙️ Custom scripts");
-   menu.addItem("Extract excel data", "main");
-   menu.addToUi();
+  const menu = SpreadsheetApp.getUi().createMenu("⚙️ Custom scripts");
+  menu.addItem("Extract excel data", "main");
+  menu.addToUi();
 
   const defaultEntryFolder = "GAP";
 
@@ -25,9 +25,9 @@ const scenario = () => {
   // Process the user's response.
   if (presetsResponse == ui.Button.YES) {
     return defaultEntryFolder;// default will be returned if no folder is chosen!
-  } else if (presetsResponse == ui.Button.NO){
+  } else if (presetsResponse == ui.Button.NO) {
     return grabInputFolderName(ui, defaultEntryFolder);// retrieve the folder name from the user
-  } else{
+  } else {
     return null;// if user clicks cancel or exit button, script will stop running
   }
 }
@@ -57,5 +57,4 @@ const grabInputFolderName = (ui, defaultFolder) => {
   }
 
   return res;
-
 }

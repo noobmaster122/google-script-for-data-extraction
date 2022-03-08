@@ -1,28 +1,22 @@
 /**
  * create a tmp folder to hold converted xls files
- * @uses : customNotice()| isExcelSheet() | getTargetFiles() | excelToSheet()
+ * @uses : isExcelSheet() | getTargetFiles() | excelToSheet()
  *
  * @param {string} readFromFolder
  * @return {array}
  * @customfunction
  */
 function importXLS(readFromFolder) {
-
-  try {
-    const files = getTargetFiles(readFromFolder);// get all xls files 
-    let convertedXlsIds = [];
-    while (files.hasNext()) {
-      const xFile = files.next();
-      const name = xFile.getName();
-      if (isExcelSheet(name)) {// only parse excel files
-        convertedXlsIds.push(excelToSheet(xFile))// save converted file id
-      }
+  const files = getTargetFiles(readFromFolder);// get all xls files 
+  let convertedXlsIds = [];
+  while (files.hasNext()) {
+    const xFile = files.next();
+    const name = xFile.getName();
+    if (isExcelSheet(name)) {// only parse excel files
+      convertedXlsIds.push(excelToSheet(xFile))// save converted file id
     }
-    return convertedXlsIds;// return Ids
-  } catch (err) {
-    customNotice(`Script failed to convert excel sheets for the following reason : \n\n ${err.toString()}`)
   }
-
+  return convertedXlsIds;// return Ids
 }
 /**
  * check if file is valid excel sheet
@@ -56,7 +50,6 @@ const fileNameTimestampAndExt = (title) => {
  * @customfunction
  */
 const excelToSheet = (file) => {
-
   const ID = file.getId();// get excel sheet id
   const name = file.getName();
   const xBlob = file.getBlob();// extract its blob
@@ -81,7 +74,8 @@ const excelToSheet = (file) => {
 const getTargetFiles = (name) => {
   const folders = DriveApp.getFoldersByName(name);
   const folder = folders.hasNext() ? folders.next() : undefined;
-  if (!folder) throw 'Error: target folder not found! Enter an existing folder!';
+  if (!folder) throw 'target folder not found! Enter an existing folder!';// this will get catched in main()
+
   return folder
     .getFiles();
 }
@@ -100,7 +94,4 @@ const geTmpFolderId = () => {
   }
 
   return tmpFolder.getId();
-
 }
-
-

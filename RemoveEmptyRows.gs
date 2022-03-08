@@ -5,10 +5,4 @@
  * @return {array}
  * @customfunction
  */
-const removeEmptyRows = (data) => { 
-  try { 
-    return data.filter(row => !row.every(cell => cell === (''))) 
-    } catch (err) {
-       customNotice(`Script failed during empty rows removal for the following reason : \n\n ${err.toString()}`); 
-  }
-}
+const removeEmptyRows = (data) => data.filter(row => !row.every(cell => cell === ('')));
