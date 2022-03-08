@@ -12,8 +12,8 @@ function importXLS(readFromFolder) {
     const files = getTargetFiles(readFromFolder);// get all xls files 
     let convertedXlsIds = [];
     while (files.hasNext()) {
-      let xFile = files.next();
-      let name = xFile.getName();
+      const xFile = files.next();
+      const name = xFile.getName();
       if (isExcelSheet(name)) {// only parse excel files
         convertedXlsIds.push(excelToSheet(xFile))// save converted file id
       }
@@ -80,7 +80,7 @@ const excelToSheet = (file) => {
  */
 const getTargetFiles = (name) => {
   const folders = DriveApp.getFoldersByName(name);
-  let folder = folders.hasNext() ? folders.next() : undefined;
+  const folder = folders.hasNext() ? folders.next() : undefined;
   if (!folder) throw 'Error: target folder not found! Enter an existing folder!';
   return folder
     .getFiles();

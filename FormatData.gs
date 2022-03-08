@@ -6,7 +6,7 @@
  *
  * @param {array} xlsData.
  * @param {string} fileName.
- * @return {array}.
+ * @return {array}
  * @customfunction
  */
 const formatData = (xlsData, fileName) => {

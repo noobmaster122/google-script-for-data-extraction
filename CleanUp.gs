@@ -2,7 +2,7 @@
  * the script wont clear the tmp folder if it fails
  * in which case, this function will do that
  *
- * @param {void}
+ * @param {string}
  * @return {void}
  * @customfunction
  */
@@ -43,3 +43,9 @@ const fileDeletionNotice = () => {
 
   return ui.Button.YES ? true : false;
 }
+
+
+
+
+
+

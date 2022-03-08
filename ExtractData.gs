@@ -15,6 +15,7 @@ const extractData = (xlsIds) => {
     xlsIds.forEach(id => {
       const convertedSheet = ss.openById(id);
       let data = convertedSheet.getDataRange().getValues();// get raw data
+      console.log("am raw data", data);
       data = formatData(removeEmptyRows(data), convertedSheet.getName());// remove empty columns and format data 
       cleaneData.push(...data);// save extracted data
       removeConvertedXls(id);// delete sheet after extracting data
