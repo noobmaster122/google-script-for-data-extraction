@@ -35,7 +35,7 @@ const isExcelSheet = (title) => {
   return !!reg.exec(title);
 }
 /**
- * get file extension
+ * get file timstamp and extension part of the title
  *
  * @param {string} title
  * @return {string|null} 
