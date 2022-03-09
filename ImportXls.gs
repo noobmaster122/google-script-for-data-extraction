@@ -7,16 +7,20 @@
  * @customfunction
  */
 function importXLS(readFromFolder) {
-  const files = getTargetFiles(readFromFolder);// get all xls files 
-  let convertedXlsIds = [];
-  while (files.hasNext()) {
-    const xFile = files.next();
-    const name = xFile.getName();
-    if (isExcelSheet(name)) {// only parse excel files
-      convertedXlsIds.push(excelToSheet(xFile))// save converted file id
+  try {
+    const files = getTargetFiles(readFromFolder);// get all xls files 
+    const convertedXlsIds = [];
+    while (files.hasNext()) {
+      const xFile = files.next();
+      const name = xFile.getName();
+      if (isExcelSheet(name)) {// only parse excel files
+        convertedXlsIds.push(excelToSheet(xFile))// save converted file id
+      }
     }
+    return convertedXlsIds;// return Ids
+  } catch (err) {
+    customNotice(__getStackTrace__(err));
   }
-  return convertedXlsIds;// return Ids
 }
 /**
  * check if file is valid excel sheet

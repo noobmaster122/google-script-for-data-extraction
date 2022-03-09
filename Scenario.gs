@@ -9,10 +9,9 @@
  */
 const scenario = () => {
 
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
   const ui = SpreadsheetApp.getUi();
   //create menu
-  const menu = SpreadsheetApp.getUi().createMenu("⚙️ Custom scripts");
+  const menu = ui.createMenu("⚙️ Custom scripts");
   menu.addItem("Extract excel data", "main");
   menu.addToUi();
 

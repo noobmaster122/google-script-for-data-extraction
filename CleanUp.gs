@@ -1,6 +1,7 @@
 /**
  * the script wont clear the tmp folder if it fails
  * in which case, this function will do that
+ * @uses listFolderFiles() | fileDeletionNotice() | removeConvertedXls()
  *
  * @param {void}
  * @return {void}
@@ -13,13 +14,14 @@ const cleanUp = () => {
 }
 /**
  * retrieve data of all the files inside tmp folder
+ * @uses getTargetFiles()
  * 
  * @param {void}
  * @return {array}
  * @customfunction
  */
 const listFolderFiles = () => {
-  let files = [];
+  const files = [];
   const defaultFolder = 'tmp';
   const filesEntry = getTargetFiles(defaultFolder);
   while (filesEntry.hasNext()) {
@@ -30,6 +32,7 @@ const listFolderFiles = () => {
 }
 /**
  * display a modal informing the user of the files to be deleted, and giving the choice to proceed or not!
+ * @uses listFolderFiles()
  * 
  * @param {void}
  * @return {bool}
@@ -38,7 +41,9 @@ const listFolderFiles = () => {
 const fileDeletionNotice = () => {
   const ui = SpreadsheetApp.getUi();
   const files = listFolderFiles().map(file => file.title).join('\n file name : ');
-  ui.alert(`These files inside the tmp folder will get deleted!Do you wish to continue ? \n\n 
+  const presetsResponse = ui.alert(`These files inside the tmp folder will get deleted!Do you wish to continue ? \n\n 
                                   ${files}`, ui.ButtonSet.YES_NO);
-  return ui.Button.YES ? true : false;
+  return presetsResponse == ui.Button.YES;
 }
+
+

@@ -8,6 +8,7 @@
 const customNotice = (msg) => SpreadsheetApp.getUi().alert(msg);
 /**
  * get error stack
+ * @todo find a better way to display the whole stack trace and not just a shallow one
  *
  * @param {string}
  * @return {string}
